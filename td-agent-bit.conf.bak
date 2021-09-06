@@ -1,0 +1,22 @@
+[SERVICE]
+    Flush        5
+    Daemon       Off
+    Log_Level    debug
+    Parser	 docker
+
+[INPUT]
+    Name              tail
+    Tag               vicky-test.*
+    Path              /var/log/*.txt
+    Parser            docker
+    Mem_Buf_Limit     5M
+    Skip_Long_Lines   On
+    Refresh_Interval  10
+#    Multiline 	      On
+[OUTPUT]
+    Name  es
+    Match *
+    Host  10.130.72.215
+    Port  9200
+    Index fbit
+    Type  docker
