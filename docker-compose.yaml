@@ -1,4 +1,4 @@
-version: "2"
+version: "3.7"
 
 networks:
   app-tier:
@@ -6,13 +6,15 @@ networks:
 
 services:
   fluent-bit:
-    env_file:
-      - ./fluentbit.env
-    image: amazon/aws-for-fluent-bit:latest
+    environment:
+      - FLUENTBIT_IMG=${FLUENTBIT_IMG}
+    image: ${FLUENTBIT_IMG}
     networks:
       - app-tier
-    command: ["--config=/etc/td-agent-bit.conf"]
+   # command: ["--config=/etc/td-agent-bit.conf"]
     volumes:
-      - ./td-agent-bit.conf:/etc/td-agent-bit.conf
+      - ./fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+      - ./plugins.conf:/fluent-bit/etc/plugins.conf
+      - ./plugins:/fluent-bit/etc/plugins
       - /var/log:/var/log
 
